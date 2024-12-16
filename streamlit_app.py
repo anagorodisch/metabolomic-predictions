@@ -237,8 +237,11 @@ def generar_predicciones(clinica_y_espectros):
 ######Prediccion lgb embarazo
 # Cargar los LabelEncoders guardados
   df_embarazo = df_completo_lgb
-  print(df_embarazo.columns)
   columns_to_transform = [ 'PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
+
+  # Mostrar valores únicos de cada columna
+  for col in df_embarazo:
+    print(f"Valores únicos en '{col}': {df_embarazo[col].unique()}")
 
   for column in columns_to_transform:
       df_embarazo[column] = label_encoders_lgb[column].transform(df_embarazo[column])
