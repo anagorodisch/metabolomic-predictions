@@ -111,11 +111,12 @@ if uploaded_files:
             espectros_sindrift.insert(2, 'EDAD PTE OVOCITOS', edad_ovocitos)  # Después de REP_ID
             espectros_sindrift.insert(3, 'PROCEDENCIA OVOCITOS', procedencia_ovocitos)
             espectros_sindrift.insert(4, 'PROCEDENCIA SEMEN', procedencia_semen)
-            espectros_sindrift.insert(5, 'DIA EMBRION', dia_embrion)
-            espectros_sindrift.insert(6, 'GRADO EXPANSIÓN', grado_expansion)
-            espectros_sindrift.insert(7, 'MCI', mci)
-            espectros_sindrift.insert(8, 'TROFODERMO', trofodermo)
-            espectros_sindrift.insert(9, 'DESTINO', destino)
+            espectros_sindrift.insert(5, 'ESTADO SEMEN', estado_semen)
+            espectros_sindrift.insert(6, 'DIA EMBRION', dia_embrion)
+            espectros_sindrift.insert(7, 'GRADO EXPANSIÓN', grado_expansion)
+            espectros_sindrift.insert(8, 'MCI', mci)
+            espectros_sindrift.insert(9, 'TROFODERMO', trofodermo)
+            espectros_sindrift.insert(10,'DESTINO', destino)
 
         except Exception as e:
             st.error(f"Error al concatenar los espectros recortados: {e}")
@@ -155,7 +156,7 @@ def tratamiento_señal(espectro_completo,model):
         return df_segmentado
 
     # Eliminación de columnas no deseadas
-    solo_espectros = espectro_completo.drop(columns=["ID", "REP_ID", 'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDENCIA SEMEN", "ESTADO SEMEN", "DIA EMBRION", "GRADO EXPANSIÓN", "MCI", "TROFODERMO", "DESTINO", "ploidía", "embarazo", "medio de cultivo"])#,"MEDIO DE CULTIVO"])
+    solo_espectros = espectro_completo.drop(columns=["ID", "REP_ID", 'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDENCIA SEMEN", "ESTADO SEMEN", "DIA EMBRION", "GRADO EXPANSIÓN", "MCI", "TROFODERMO", "DESTINO"])
 
     # Especificar los intervalos de longitudes de onda a eliminar
     intervalos_a_eliminar = [(674, 799), (1772, 2818)]
@@ -177,7 +178,7 @@ def tratamiento_señal(espectro_completo,model):
     df_resultado = pd.concat([crudo, der_1], axis=1)
 
     # Seleccionar y reorganizar columnas
-    columns_to_add = [  "ID","REP_ID",'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDENCIA SEMEN", "ESTADO SEMEN", "DIA EMBRION", "GRADO EXPANSIÓN", "MCI", "TROFODERMO", "DESTINO", "ploidía","embarazo","medio de cultivo"]#,"MEDIO DE CULTIVO"]
+    columns_to_add = [  "ID","REP_ID",'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDENCIA SEMEN", "ESTADO SEMEN", "DIA EMBRION", "GRADO EXPANSIÓN", "MCI", "TROFODERMO", "DESTINO"]
     nuevo_dataset = espectro_completo[columns_to_add].join(df_resultado)
     return nuevo_dataset
 
@@ -200,7 +201,7 @@ def generar_predicciones(clinica_y_espectros):
   df_completo_dnn = tratamiento_señal(clinica_y_espectros,"dnn")
 
 #####Bloque de prediccion lgb ploidia
-  df_ploidia = df_completo_lgb.drop(columns=["embarazo","ploidía","medio de cultivo"])
+  df_ploidia = df_completo_lgb
   columns_to_transform = [ 'PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
 
   for column in columns_to_transform:
@@ -235,7 +236,7 @@ def generar_predicciones(clinica_y_espectros):
 
 ######Prediccion lgb embarazo
 # Cargar los LabelEncoders guardados
-  df_embarazo = df_completo_lgb.drop(columns=["embarazo","ploidía", "medio de cultivo"])
+  df_embarazo = df_completo_lgb
   columns_to_transform = [ 'PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
 
   for column in columns_to_transform:
@@ -272,7 +273,7 @@ def generar_predicciones(clinica_y_espectros):
 
 #######prediccion ploidia dnn
 
-  df_ploidia = df_completo_dnn.drop(columns=["embarazo","ploidía", "medio de cultivo"])
+  df_ploidia = df_completo_dnn
   nuevo_orden = ['ID', 'REP_ID','crudo_2', 'crudo_3', 'crudo_4', 'crudo_5', 'crudo_6', 'crudo_7', 'd1_2', 'd1_3', 'd1_4', 'd1_5', 'd1_6', 'd1_7','EDAD PTE OVOCITOS', 'PROCEDENCIA OVOCITOS', 'PROCEDENCIA SEMEN','ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO','DESTINO']
   # Reorganizar columnas
   df_ploidia = df_ploidia[nuevo_orden]
@@ -318,7 +319,7 @@ def generar_predicciones(clinica_y_espectros):
 
 ###prediccion embarazo dnn
   # PRIMERO PROCESO LAS VARIABLES NUMÉRICAS
-  df_embarazo = df_completo_dnn.drop(columns=["embarazo","ploidía", "medio de cultivo"])
+  df_embarazo = df_completo_dnn
   X_test_numeric = df_embarazo[cols_escalares]
 
   scaler=StandardScaler()
@@ -352,11 +353,10 @@ def generar_predicciones(clinica_y_espectros):
 
   return pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb
 
-pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb = generar_predicciones(espectros_sindrift)
-
 # Botón para predecir
 if st.button("Predecir"):
-    if espectros_recortados:
+    if espectros_sindrift:
+        pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb = generar_predicciones(espectros_sindrift)
         st.write("pred_embarazo_dnn")
         st.write(pred_embarazo_dnn)
         st.write("pred_embarazo_lgb")
