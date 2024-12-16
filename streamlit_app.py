@@ -38,10 +38,10 @@ edad_ovocitos = st.text_input("Edad Ovocitos")
 # Dropdowns para las demás variables clínicas
 procedencia_ovocitos = st.selectbox("Procedencia Ovocitos", ["ÓVULO PROPIO", "ÓVULO DONADO"])
 procedencia_semen = st.selectbox("Procedencia Semen", ["SEMEN PROPIO", "SEMEN DONADO"])
-estado_semen = st.selectbox("Estado Semen", ["FRESCO", "CONGELADO"])
+estado_semen = st.selectbox("Estado Semen", ["FRESCO", "CRIOPRESERVADO"])
 dia_embrion = st.selectbox("Día del embrión", [5, 6])
 destino = st.selectbox("Destino", ["FRESCO", "CONGELADO"])
-grado_expansion = st.selectbox("Grado de Expansión", [1, 2, 3, 4, 5, 6])
+grado_expansion = st.selectbox("Grado de Expansión", [3, 4, 5, 6])
 mci = st.selectbox("MCI", ["A", "B", "C/D"])
 trofodermo = st.selectbox("Trofodermo", ["A", "B", "C"])
 
