@@ -41,8 +41,8 @@ procedencia_semen = st.selectbox("Procedencia Semen", ["SEMEN PROPIO", "SEMEN DO
 estado_semen = st.selectbox("Estado Semen", ["FRESCO", "CRIOPRESERVADO"])
 dia_embrion = st.selectbox("Día del embrión", [5, 6])
 destino = st.selectbox("Destino", ["FRESCO", "CONGELADO"])
-grado_expansion = st.selectbox("Grado de Expansión", [3, 4, 5, 6])
-mci = st.selectbox("MCI", ["A", "B", "C/D"])
+grado_expansion = st.selectbox("Grado de Expansión", [3, 4, 5])
+mci = st.selectbox("MCI", ["A", "B"])
 trofodermo = st.selectbox("Trofodermo", ["A", "B", "C"])
 
 # ARMO EL DATAFRAME
