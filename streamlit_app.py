@@ -385,3 +385,5 @@ if st.button("Predecir"):
         st.table(df)
     else:
         st.error("Por favor, cargue archivos para continuar.")
+
+df_pred_embarazo_dnn
