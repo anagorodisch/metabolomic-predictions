@@ -1,1 +1,6 @@
 streamlit
+joblib
+lightgbm
+scikit-learn
+tensorflow
+scipy
