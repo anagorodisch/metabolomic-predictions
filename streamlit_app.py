@@ -123,7 +123,6 @@ if uploaded_files:
     else:
         st.info("No se encontraron espectros válidos para procesar.")
 
-
 # GENERO LAS PREDICCIONES 
 def tratamiento_señal(espectro_completo,model):
     def integrales(X):
@@ -199,10 +198,13 @@ def generar_predicciones(clinica_y_espectros):
 
   df_completo_lgb = tratamiento_señal(clinica_y_espectros,"lgb")
   df_completo_dnn = tratamiento_señal(clinica_y_espectros,"dnn")
+  # Mostrar valores únicos de cada columna
+  for col in df_completo_lgb.columns:
+      print(f"Valores únicos en '{col}': {df_completo_lgb[col].unique()}")
 
 #####Bloque de prediccion lgb ploidia
   df_ploidia = df_completo_lgb
-  columns_to_transform = [ 'PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
+  columns_to_transform = ['PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
 
   for column in columns_to_transform:
       df_ploidia[column] = label_encoders_lgb[column].transform(df_ploidia[column])
@@ -210,7 +212,7 @@ def generar_predicciones(clinica_y_espectros):
   df_ploidia['EDAD PTE OVOCITOS'] = df_ploidia['EDAD PTE OVOCITOS'].astype(int)
 
   cols_no_escalar = ['ID', 'REP_ID']
-  cols_escalares = ['crudo_2','crudo_3','crudo_4', 'crudo_5', 'crudo_6', 'crudo_7','d1_2','d1_3','d1_4','d1_5','d1_6','d1_7',]
+  cols_escalares = ['crudo_2','crudo_3','crudo_4', 'crudo_5', 'crudo_6', 'crudo_7','d1_2','d1_3','d1_4','d1_5','d1_6','d1_7']
 
   df_ploidia = df_ploidia.drop(columns=cols_no_escalar)
 
@@ -229,19 +231,18 @@ def generar_predicciones(clinica_y_espectros):
   y_pred = [1 if prob > 0.5 else 0 for prob in y_pred_prob]
 
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
-  df_pred_ploidia_lgb = df_completo_lgb[['ID']].copy()
+  df_pred_ploidia_lgb = df_completo_lgb[['REP_ID']].copy()
   df_pred_ploidia_lgb['Prediccion'] = y_pred
 
   pred_ploidia_lgb = Counter(df_pred_ploidia_lgb['Prediccion']).most_common(1)[0][0]
 
+  for col in df_completo_lgb.columns:
+    print(f"Valores únicos en '{col}': {df_completo_lgb[col].unique()}")
+    
 ######Prediccion lgb embarazo
 # Cargar los LabelEncoders guardados
   df_embarazo = df_completo_lgb
-  columns_to_transform = [ 'PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
-
-  # Mostrar valores únicos de cada columna
-  for col in df_embarazo:
-    print(f"Valores únicos en '{col}': {df_embarazo[col].unique()}")
+  columns_to_transform = ['PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
 
   for column in columns_to_transform:
       df_embarazo[column] = label_encoders_lgb[column].transform(df_embarazo[column])
