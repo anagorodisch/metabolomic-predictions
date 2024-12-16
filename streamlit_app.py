@@ -376,13 +376,12 @@ def generar_predicciones(clinica_y_espectros):
 if st.button("Predecir"):
     if espectros_recortados:
         pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb = generar_predicciones(espectros_sindrift)
-        st.write("pred_embarazo_dnn")
-        st.write(pred_embarazo_dnn)
-        st.write("pred_embarazo_lgb")
-        st.write(pred_embarazo_lgb)
-        st.write("pred_ploidia_dnn")
-        st.write(pred_ploidia_dnn)
-        st.write("pred_ploidia_lgb")
-        st.write(pred_ploidia_lgb)
+        data = {
+        "Modelo_ML": ["pred_embarazo_lgb", "pred_ploidia_lgb"],
+        "Modelo_DL": ["predembarazo_dnn", "pred_ploidia_dnn"]
+        }
+
+        df = pd.DataFrame(data, index=["Embarazo", "Ploidía"])
+        st.table(df)
     else:
         st.error("Por favor, cargue archivos para continuar.")
