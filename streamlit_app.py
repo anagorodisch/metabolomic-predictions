@@ -237,6 +237,7 @@ def generar_predicciones(clinica_y_espectros):
 ######Prediccion lgb embarazo
 # Cargar los LabelEncoders guardados
   df_embarazo = df_completo_lgb
+  print(df_embarazo.columns)
   columns_to_transform = [ 'PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
 
   for column in columns_to_transform:
