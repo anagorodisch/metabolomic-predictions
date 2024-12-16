@@ -198,12 +198,9 @@ def generar_predicciones(clinica_y_espectros):
 
   df_completo_lgb = tratamiento_señal(clinica_y_espectros,"lgb")
   df_completo_dnn = tratamiento_señal(clinica_y_espectros,"dnn")
-  # Mostrar valores únicos de cada columna
-  for col in df_completo_lgb.columns:
-      print(f"Valores únicos en '{col}': {df_completo_lgb[col].unique()}")
 
 #####Bloque de prediccion lgb ploidia
-  df_ploidia = df_completo_lgb
+  df_ploidia = df_completo_lgb.copy()
   columns_to_transform = ['PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
 
   for column in columns_to_transform:
@@ -236,12 +233,9 @@ def generar_predicciones(clinica_y_espectros):
 
   pred_ploidia_lgb = Counter(df_pred_ploidia_lgb['Prediccion']).most_common(1)[0][0]
 
-  for col in df_completo_lgb.columns:
-    print(f"Valores únicos en '{col}': {df_completo_lgb[col].unique()}")
-    
 ######Prediccion lgb embarazo
 # Cargar los LabelEncoders guardados
-  df_embarazo = df_completo_lgb
+  df_embarazo = df_completo_lgb.copy()
   columns_to_transform = ['PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
 
   for column in columns_to_transform:
