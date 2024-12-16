@@ -114,6 +114,10 @@ if uploaded_files:
     else:
         st.info("No se encontraron espectros válidos para procesar.")
 
+
+# GENERO LAS PREDICCIONES 
+
+
 # Botón para predecir
 if st.button("Predecir"):
     if espectros_recortados:
