@@ -355,7 +355,7 @@ def generar_predicciones(clinica_y_espectros):
 
 # Botón para predecir
 if st.button("Predecir"):
-    if espectros_sindrift:
+    if espectros_recortados:
         pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb = generar_predicciones(espectros_sindrift)
         st.write("pred_embarazo_dnn")
         st.write(pred_embarazo_dnn)
