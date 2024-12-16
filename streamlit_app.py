@@ -233,6 +233,11 @@ def generar_predicciones(clinica_y_espectros):
 
   pred_ploidia_lgb = Counter(df_pred_ploidia_lgb['Prediccion']).most_common(1)[0][0]
 
+  if pred_ploidia_lgb == 1:
+      pred_ploidia_lgb = 'EUPLOIDE'
+  else:
+      pred_ploidia_lgb = 'ANEUPLOIDE'
+
 ######Prediccion lgb embarazo
 # Cargar los LabelEncoders guardados
   df_embarazo = df_completo_lgb.copy()
@@ -265,10 +270,15 @@ def generar_predicciones(clinica_y_espectros):
   y_pred_prob = model.predict(X_test, num_iteration=model.best_iteration)
   y_pred = [1 if prob > 0.5 else 0 for prob in y_pred_prob]
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
-  df_pred_embarazo_lgb = df_completo_lgb[['ID']].copy()
+  df_pred_embarazo_lgb = df_completo_lgb[['REP_ID']].copy()
   df_pred_embarazo_lgb['Prediccion'] = y_pred
 
   pred_embarazo_lgb = Counter(df_pred_embarazo_lgb['Prediccion']).most_common(1)[0][0]
+
+  if pred_embarazo_lgb == 1:
+      pred_embarazo_lgb = 'EMBARAZO'
+  else:
+      pred_embarazo_lgb = 'NO EMBARAZO'
 
 #######prediccion ploidia dnn
 
@@ -311,10 +321,15 @@ def generar_predicciones(clinica_y_espectros):
   y_pred = dense_model.predict(X_test_compuesto)
   y_pred = np.argmax(y_pred, axis=1)
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
-  df_pred_ploidia_dnn = df_completo_dnn[['ID']].copy()
+  df_pred_ploidia_dnn = df_completo_dnn[['REP_ID']].copy()
   df_pred_ploidia_dnn['Prediccion'] = y_pred
 
   pred_ploidia_dnn = Counter(df_pred_ploidia_dnn['Prediccion']).most_common(1)[0][0]
+
+  if pred_ploidia_dnn == 1:
+      pred_ploidia_dnn = 'EUPLOIDE'
+  else:
+      pred_ploidia_dnn = 'ANEUPLOIDE'
 
 ###prediccion embarazo dnn
   # PRIMERO PROCESO LAS VARIABLES NUMÉRICAS
@@ -345,10 +360,15 @@ def generar_predicciones(clinica_y_espectros):
   y_pred = dense_model.predict(X_test_compuesto)
   y_pred = np.argmax(y_pred, axis=1)
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
-  df_pred_embarazo_dnn = df_completo_dnn[['ID']].copy()
+  df_pred_embarazo_dnn = df_completo_dnn[['REP_ID']].copy()
   df_pred_embarazo_dnn['Prediccion'] = y_pred
 
   pred_embarazo_dnn = Counter(df_pred_embarazo_dnn['Prediccion']).most_common(1)[0][0]
+
+  if pred_embarazo_dnn == 1:
+      pred_embarazo_dnn = 'EMBARAZO'
+  else:
+      pred_embarazo_dnn = 'NO EMBARAZO'
 
   return pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb
 
