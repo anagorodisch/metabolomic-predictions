@@ -12,6 +12,7 @@ from scipy.signal import savgol_filter
 import plotly.graph_objs as go
 
 # Título de la aplicación
+st.image("embryoxite.png", width=150)
 st.title("PREDICCIÓN DE EMBARAZO Y PLOIDÍA")
 
 # Selección de archivos
@@ -430,7 +431,6 @@ def plot_signals(dataframe, predictions, task):
 
     # Configuración del layout
     fig.update_layout(
-        title='Predicciones Individuales',
         xaxis_title='Longitud de onda',
         yaxis_title='Absorbancia',
         legend_title='Espectros',
@@ -453,7 +453,7 @@ if st.button("Predecir"):
         st.subheader("Predicciones")
         st.table(df)
 
-        st.subheader("Gráfico de Espectros")
+        st.subheader("Predicciones por Espectro")
         tab1, tab2, tab3, tab4 = st.tabs(["EMBARAZO_ML", "EMBARAZO_DL", "PLOIDÍA_ML", "PLOIDÍA_DL"])
         fig_1 = plot_signals(espectros_sindrift, df_pred_embarazo_lgb, 'embarazo')
         fig_2 = plot_signals(espectros_sindrift, df_pred_embarazo_dnn, 'embarazo')
