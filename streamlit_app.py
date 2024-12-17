@@ -373,7 +373,7 @@ def generar_predicciones(clinica_y_espectros):
 
   return pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb
 
-def plot_signals(dataframe, predictions):
+def plot_signals(dataframe, predictions, task):
     traces = []
     # Crear un diccionario con REP_ID como clave y Prediccion como valor
     pred_dict = dict(zip(predictions['REP_ID'], predictions['Prediccion']))
@@ -402,19 +402,26 @@ def plot_signals(dataframe, predictions):
         )
         traces.append(trace)
 
+    if task == 'embarazo':
+        positive = 'EMBARAZO'
+        negative = 'NO EMBARAZO'
+    elif task == 'ploidia':
+        positive = 'EUPLOIDE'
+        negative = 'ANEUPLOIDE'
+
     # Agregar "color code" como una traza invisible para la leyenda
     color_code_traces = [
         go.Scatter(
             x=[None], y=[None],
             mode='markers',
             marker=dict(size=10, color='red'),
-            name='Predicción: 1 (Rojo)'
+            name=positive
         ),
         go.Scatter(
             x=[None], y=[None],
             mode='markers',
             marker=dict(size=10, color='blue'),
-            name='Predicción: 0 (Azul)'
+            name=negative
         )
     ]
 
@@ -423,7 +430,7 @@ def plot_signals(dataframe, predictions):
 
     # Configuración del layout
     fig.update_layout(
-        title='Espectros con Predicción de Colores',
+        title='Predicciones Individuales',
         xaxis_title='Longitud de onda',
         yaxis_title='Absorbancia',
         legend_title='Espectros',
@@ -447,8 +454,15 @@ if st.button("Predecir"):
         st.table(df)
 
         st.subheader("Gráfico de Espectros")
-        fig = plot_signals(espectros_sindrift, df_pred_embarazo_dnn)
-        st.plotly_chart(fig)  # Mostrar la figura de Plotly en Streamlit
+        tab1, tab2, tab3, tab4 = st.tabs(["EMBARAZO_ML", "EMBARAZO_DL", "PLOIDÍA_ML", "PLOIDÍA_DL"])
+        fig_1 = plot_signals(espectros_sindrift, df_pred_embarazo_lgb, 'embarazo')
+        fig_2 = plot_signals(espectros_sindrift, df_pred_embarazo_dnn, 'embarazo')
+        fig_3 = plot_signals(espectros_sindrift, df_pred_ploidia_lgb, 'ploidia')
+        fig_4 = plot_signals(espectros_sindrift, df_pred_ploidia_dnn, 'ploidia')
+        tab1.plotly_chart(fig_1)
+        tab2.plotly_chart(fig_2)
+        tab3.plotly_chart(fig_3)
+        tab4.plotly_chart(fig_4)
     else:
         st.error("Por favor, cargue archivos para continuar.")
 
