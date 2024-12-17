@@ -402,12 +402,28 @@ def plot_signals(dataframe, predictions):
         )
         traces.append(trace)
 
-    # Crear la figura
-    fig = go.Figure(traces)
+    # Agregar "color code" como una traza invisible para la leyenda
+    color_code_traces = [
+        go.Scatter(
+            x=[None], y=[None],
+            mode='markers',
+            marker=dict(size=10, color='red'),
+            name='Predicción: 1 (Rojo)'
+        ),
+        go.Scatter(
+            x=[None], y=[None],
+            mode='markers',
+            marker=dict(size=10, color='blue'),
+            name='Predicción: 0 (Azul)'
+        )
+    ]
+
+    # Crear la figura con todas las trazas
+    fig = go.Figure(traces + color_code_traces)
 
     # Configuración del layout
     fig.update_layout(
-        title='Espectros',
+        title='Espectros con Predicción de Colores',
         xaxis_title='Longitud de onda',
         yaxis_title='Absorbancia',
         legend_title='Espectros',
