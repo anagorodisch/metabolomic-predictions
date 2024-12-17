@@ -459,10 +459,10 @@ if st.button("Predecir"):
         fig_2 = plot_signals(espectros_sindrift, df_pred_embarazo_dnn, 'embarazo')
         fig_3 = plot_signals(espectros_sindrift, df_pred_ploidia_lgb, 'ploidia')
         fig_4 = plot_signals(espectros_sindrift, df_pred_ploidia_dnn, 'ploidia')
-        tab1.plotly_chart(fig_1)
-        tab2.plotly_chart(fig_2)
-        tab3.plotly_chart(fig_3)
-        tab4.plotly_chart(fig_4)
+        tab1.plotly_chart(fig_1, key="embarazo_ml")
+        tab2.plotly_chart(fig_2, key="embarazo_dl")
+        tab3.plotly_chart(fig_3, key="ploidia_ml")
+        tab4.plotly_chart(fig_4, key="ploidia_dl")
     else:
         st.error("Por favor, cargue archivos para continuar.")
 
