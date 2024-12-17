@@ -12,7 +12,7 @@ from scipy.signal import savgol_filter
 import plotly.graph_objs as go
 
 # Título de la aplicación
-st.image("embryoxite.png", width=150)
+st.image("embryoxite.png", width=250)
 st.title("PREDICCIÓN DE EMBARAZO Y PLOIDÍA")
 
 # Selección de archivos
