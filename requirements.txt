@@ -4,3 +4,4 @@ lightgbm
 scikit-learn
 tensorflow
 scipy
+plotly

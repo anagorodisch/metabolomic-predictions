@@ -9,6 +9,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler, LabelEncoder
 from collections import Counter
 from tensorflow.keras.models import load_model
 from scipy.signal import savgol_filter
+import plotly.graph_objs as go
 
 # Título de la aplicación
 st.title("PREDICCIÓN DE EMBARAZO Y PLOIDÍA")
@@ -372,6 +373,50 @@ def generar_predicciones(clinica_y_espectros):
 
   return pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb
 
+def plot_signals(dataframe, predictions):
+    traces = []
+    # Crear un diccionario con REP_ID como clave y Prediccion como valor
+    pred_dict = dict(zip(predictions['REP_ID'], predictions['Prediccion']))
+
+    nombres_archivos = dataframe['REP_ID']
+    # Eliminar las columnas no deseadas
+    df = dataframe.drop(columns=['ID', 'REP_ID', 'EDAD PTE OVOCITOS', 'PROCEDENCIA OVOCITOS', 
+                                 'PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 
+                                 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO'])
+
+    for row in df.index:
+        rep_id = nombres_archivos[row]
+        # Obtener el valor de predicción para el espectro actual
+        pred_value = pred_dict.get(rep_id, 0)  # Si no encuentra el valor, asigna 0 por defecto
+
+        # Asignar color según la predicción
+        color = 'red' if pred_value == 1 else 'blue'
+
+        trace = go.Scatter(
+            x=df.columns,
+            y=df.loc[row],
+            mode='lines',
+            name=rep_id,
+            line=dict(color=color),  # Asignar el color al espectro
+            hovertemplate=f"Señal: {rep_id}<br>Predicción: {pred_value}<extra></extra>"
+        )
+        traces.append(trace)
+
+    # Crear la figura
+    fig = go.Figure(traces)
+
+    # Configuración del layout
+    fig.update_layout(
+        title='Espectros',
+        xaxis_title='Longitud de onda',
+        yaxis_title='Absorbancia',
+        legend_title='Espectros',
+        hovermode='closest',
+        height=800
+    )
+
+    return fig
+
 # Botón para predecir
 if st.button("Predecir"):
     if espectros_recortados:
@@ -382,8 +427,12 @@ if st.button("Predecir"):
         }
 
         df = pd.DataFrame(data, index=["Embarazo", "Ploidía"])
+        st.subheader("Predicciones")
         st.table(df)
+
+        st.subheader("Gráfico de Espectros")
+        fig = plot_signals(espectros_sindrift, df_pred_embarazo_dnn)
+        st.plotly_chart(fig)  # Mostrar la figura de Plotly en Streamlit
     else:
         st.error("Por favor, cargue archivos para continuar.")
 
-df_pred_embarazo_dnn
