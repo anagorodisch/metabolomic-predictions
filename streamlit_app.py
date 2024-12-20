@@ -39,6 +39,9 @@ response = AgGrid(
 )
 
 # Verificar si se seleccionó al menos una fila
+st.write(type(response['selected_rows']))
+st.write(response['selected_rows'])
+
 if response['selected_rows']:  # Asegúrate de que 'selected_rows' sea una lista
     fila_seleccionada = response['selected_rows'][0]  # Obtener la primera fila seleccionada
     st.write("Detalles de la fila seleccionada:")
