@@ -16,7 +16,7 @@ from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, GridUpdateMode
 st.image("embryoxite.png", width=250)
 st.title("PREDICCIÓN DE EMBARAZO Y PLOIDÍA")
 
-datos = pd.read('df_para_app_final.csv')
+datos = pd.read_csv('df_para_app_final.csv')
 gb = GridOptionsBuilder.from_dataframe(datos)
 gb.configure_selection(selection_mode="single", use_checkbox=True)  # Selección única con checkbox
 grid_options = gb.build()
