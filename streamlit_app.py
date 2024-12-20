@@ -16,14 +16,21 @@ from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, GridUpdateMode
 st.image("embryoxite.png", width=250)
 st.title("PREDICCIÓN DE EMBARAZO Y PLOIDÍA")
 
+# Importo los datos
 datos = pd.read_csv('df_para_app_final.csv')
-gb = GridOptionsBuilder.from_dataframe(datos)
+datos = datos.drop(columns=['Unnamed:0'])
+
+columnas_deseadas = ["ID", 'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDENCIA SEMEN", "ESTADO SEMEN", "DIA EMBRION", "GRADO EXPANSIÓN", "MCI", "TROFODERMO", "DESTINO"]
+embriones = datos[columnas_deseadas]
+embriones = embriones.drop_duplicates(subset='ID')
+
+gb = GridOptionsBuilder.from_dataframe(embriones)
 gb.configure_selection(selection_mode="single", use_checkbox=True)  # Selección única con checkbox
 grid_options = gb.build()
 
 # Mostrar el DataFrame interactivo
 response = AgGrid(
-    datos,
+    embriones,
     gridOptions=grid_options,
     update_mode=GridUpdateMode.SELECTION_CHANGED,
     data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
