@@ -19,7 +19,7 @@ st.title("PREDICCIÓN DE EMBARAZO Y PLOIDÍA")
 # Importo los datos
 datos = pd.read_csv('df_para_app_final.csv')
 print(datos.columns)
-datos = datos.drop(columns=['Unnamed:0'])
+datos = datos.drop(columns=['Unnamed: 0'])
 
 columnas_deseadas = ["ID", 'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDENCIA SEMEN", "ESTADO SEMEN", "DIA EMBRION", "GRADO EXPANSIÓN", "MCI", "TROFODERMO", "DESTINO"]
 embriones = datos[columnas_deseadas]
