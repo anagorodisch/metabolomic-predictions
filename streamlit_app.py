@@ -38,14 +38,10 @@ response = AgGrid(
     theme="streamlit",  # Cambiar a "dark", "blue", "alpine" según tu preferencia
 )
 
-# Verificar si se seleccionó al menos una fila
-st.write(type(response['selected_rows']))
-st.write(response['selected_rows'])
-
-if response['selected_rows']:  # Asegúrate de que 'selected_rows' sea una lista
-    fila_seleccionada = response['selected_rows'][0]  # Obtener la primera fila seleccionada
+if not response['selected_rows'].empty:  # Verificar si no está vacío
+    fila_seleccionada = response['selected_rows'].iloc[0]  # Obtener la primera fila seleccionada
     st.write("Detalles de la fila seleccionada:")
-    st.write(fila_seleccionada)
+    st.write(fila_seleccionada.to_dict())
     
     # Guardar el valor del ID seleccionado
     id_seleccionado = fila_seleccionada['ID']
