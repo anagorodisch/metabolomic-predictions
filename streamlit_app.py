@@ -38,8 +38,8 @@ response = AgGrid(
     theme="streamlit",  # Cambiar a "dark", "blue", "alpine" según tu preferencia
 )
 
-# Verificar si se seleccionó una fila
-if response['selected_rows']:
+# Verificar si se seleccionó al menos una fila
+if response['selected_rows']:  # Asegúrate de que 'selected_rows' sea una lista
     fila_seleccionada = response['selected_rows'][0]  # Obtener la primera fila seleccionada
     st.write("Detalles de la fila seleccionada:")
     st.write(fila_seleccionada)
@@ -47,6 +47,8 @@ if response['selected_rows']:
     # Guardar el valor del ID seleccionado
     id_seleccionado = fila_seleccionada['ID']
     st.write(f"ID seleccionado: {id_seleccionado}")
+else:
+    st.write("No se ha seleccionado ninguna fila.")
 
 # Selección de archivos
 st.subheader("Seleccionar la señal:")
