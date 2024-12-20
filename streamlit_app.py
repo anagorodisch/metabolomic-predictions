@@ -10,10 +10,35 @@ from collections import Counter
 from tensorflow.keras.models import load_model
 from scipy.signal import savgol_filter
 import plotly.graph_objs as go
+from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, GridUpdateMode
 
 # Título de la aplicación
 st.image("embryoxite.png", width=250)
 st.title("PREDICCIÓN DE EMBARAZO Y PLOIDÍA")
+
+datos = pd.read('df_para_app_final.csv')
+gb = GridOptionsBuilder.from_dataframe(datos)
+gb.configure_selection(selection_mode="single", use_checkbox=True)  # Selección única con checkbox
+grid_options = gb.build()
+
+# Mostrar el DataFrame interactivo
+response = AgGrid(
+    datos,
+    gridOptions=grid_options,
+    update_mode=GridUpdateMode.SELECTION_CHANGED,
+    data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
+    theme="streamlit",  # Cambiar a "dark", "blue", "alpine" según tu preferencia
+)
+
+# Verificar si se seleccionó una fila
+if response['selected_rows']:
+    fila_seleccionada = response['selected_rows'][0]  # Obtener la primera fila seleccionada
+    st.write("Detalles de la fila seleccionada:")
+    st.write(fila_seleccionada)
+    
+    # Guardar el valor del ID seleccionado
+    id_seleccionado = fila_seleccionada['ID']
+    st.write(f"ID seleccionado: {id_seleccionado}")
 
 # Selección de archivos
 st.subheader("Seleccionar la señal:")

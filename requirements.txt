@@ -5,3 +5,5 @@ scikit-learn
 tensorflow
 scipy
 plotly
+streamlit-aggrid
+
