@@ -16,6 +16,7 @@ from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, GridUpdateMode
 st.image("embryoxite.png", width=250)
 st.title("PREDICCIÓN DE EMBARAZO Y PLOIDÍA")
 
+st.subheader("Seleccione un embrión:")
 # Importo los datos
 datos = pd.read_csv('df_para_app_final.csv')
 print(datos.columns)
