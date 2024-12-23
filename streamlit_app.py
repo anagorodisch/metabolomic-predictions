@@ -38,10 +38,9 @@ event = st.dataframe(
 embrion = event.selection.rows
 filtered_df = embriones.iloc[embrion]
 ID_embrion = filtered_df['ID'].values
+ID_embrion = ID_embrion[0]
+ID_embrion = str(ID_embrion)
 st.write(f"ID seleccionado: {ID_embrion}")
-ID_embrion
-hola = type(ID_embrion)
-hola
 
 df_embrion = datos[datos['ID'] == ID_embrion]
 df_embrion = df_embrion.drop(columns=['embarazo','ploidía'])
