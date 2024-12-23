@@ -25,7 +25,7 @@ datos = datos.drop(columns=['Unnamed: 0'])
 columnas_deseadas = ["ID", 'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDENCIA SEMEN", "ESTADO SEMEN", "DIA EMBRION", "GRADO EXPANSIÓN", "MCI", "TROFODERMO", "DESTINO"]
 embriones = datos[columnas_deseadas]
 embriones = embriones.drop_duplicates(subset='ID')
-embriones = embriones.reset_index()
+embriones = embriones.reset_index(drop=True)
 
 event = st.dataframe(
     embriones,
