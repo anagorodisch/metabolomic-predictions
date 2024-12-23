@@ -26,6 +26,14 @@ columnas_deseadas = ["ID", 'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDE
 embriones = datos[columnas_deseadas]
 embriones = embriones.drop_duplicates(subset='ID')
 
+event = st.dataframe(
+    embriones,
+    use_container_width=True,
+    hide_index=True,
+    on_select="rerun",
+    selection_mode="multi-row",
+)
+
 gb = GridOptionsBuilder.from_dataframe(embriones)
 gb.configure_selection(selection_mode="single", use_checkbox=True)  # Selección única con checkbox
 grid_options = gb.build()
