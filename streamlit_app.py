@@ -372,27 +372,25 @@ def plot_signals(dataframe, predictions, task):
 
 # Botón para predecir
 if st.button("Predecir"):
-    if df_embrion:
-        pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb = generar_predicciones(df_embrion)
-        data = {
-        "Modelo_ML": [pred_embarazo_lgb, pred_ploidia_lgb],
-        "Modelo_DL": [pred_embarazo_dnn, pred_ploidia_dnn]
-        }
+    pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb = generar_predicciones(df_embrion)
+    data = {
+    "Modelo_ML": [pred_embarazo_lgb, pred_ploidia_lgb],
+    "Modelo_DL": [pred_embarazo_dnn, pred_ploidia_dnn]
+    }
 
-        df = pd.DataFrame(data, index=["Embarazo", "Ploidía"])
-        st.subheader("Predicciones")
-        st.table(df)
+    df = pd.DataFrame(data, index=["Embarazo", "Ploidía"])
+    st.subheader("Predicciones")
+    st.table(df)
 
-        st.subheader("Predicciones por Espectro")
-        tab1, tab2, tab3, tab4 = st.tabs(["EMBARAZO_ML", "EMBARAZO_DL", "PLOIDÍA_ML", "PLOIDÍA_DL"])
-        fig_1 = plot_signals(df_embrion, df_pred_embarazo_lgb, 'embarazo')
-        fig_2 = plot_signals(df_embrion, df_pred_embarazo_dnn, 'embarazo')
-        fig_3 = plot_signals(df_embrion, df_pred_ploidia_lgb, 'ploidia')
-        fig_4 = plot_signals(df_embrion, df_pred_ploidia_dnn, 'ploidia')
-        tab1.plotly_chart(fig_1, key="embarazo_ml")
-        tab2.plotly_chart(fig_2, key="embarazo_dl")
-        tab3.plotly_chart(fig_3, key="ploidia_ml")
-        tab4.plotly_chart(fig_4, key="ploidia_dl")
-    else:
-        st.error("Por favor, cargue archivos para continuar.")
+    st.subheader("Predicciones por Espectro")
+    tab1, tab2, tab3, tab4 = st.tabs(["EMBARAZO_ML", "EMBARAZO_DL", "PLOIDÍA_ML", "PLOIDÍA_DL"])
+    fig_1 = plot_signals(df_embrion, df_pred_embarazo_lgb, 'embarazo')
+    fig_2 = plot_signals(df_embrion, df_pred_embarazo_dnn, 'embarazo')
+    fig_3 = plot_signals(df_embrion, df_pred_ploidia_lgb, 'ploidia')
+    fig_4 = plot_signals(df_embrion, df_pred_ploidia_dnn, 'ploidia')
+    tab1.plotly_chart(fig_1, key="embarazo_ml")
+    tab2.plotly_chart(fig_2, key="embarazo_dl")
+    tab3.plotly_chart(fig_3, key="ploidia_ml")
+    tab4.plotly_chart(fig_4, key="ploidia_dl")
+
 
