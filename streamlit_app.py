@@ -41,9 +41,7 @@ response = AgGrid(
 
 if not response['selected_rows'].empty:  # Verificar si no está vacío
     fila_seleccionada = response['selected_rows'].iloc[0]  # Obtener la primera fila seleccionada
-    st.write("Detalles de la fila seleccionada:")
-    st.write(fila_seleccionada.to_dict())
-    
+
     # Guardar el valor del ID seleccionado
     id_seleccionado = fila_seleccionada['ID']
     st.write(f"ID seleccionado: {id_seleccionado}")
