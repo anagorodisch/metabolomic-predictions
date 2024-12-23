@@ -40,36 +40,8 @@ filtered_df = embriones.iloc[embrion]
 ID_embrion = filtered_df['ID'].values
 st.write(f"ID seleccionado: {ID_embrion}")
 
-'''
-gb = GridOptionsBuilder.from_dataframe(embriones)
-gb.configure_selection(selection_mode="single", use_checkbox=True)  # Selección única con checkbox
-grid_options = gb.build()
-
-# Mostrar el DataFrame interactivo
-response = AgGrid(
-    embriones,
-    gridOptions=grid_options,
-    update_mode=GridUpdateMode.SELECTION_CHANGED,
-    data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
-    theme="streamlit",  # Cambiar a "dark", "blue", "alpine" según tu preferencia
-)
-
-
-
-if not response['selected_rows'].empty:  # Verificar si no está vacío
-    fila_seleccionada = response['selected_rows'].iloc[0]  # Obtener la primera fila seleccionada
-
-    # Guardar el valor del ID seleccionado
-    id_seleccionado = fila_seleccionada['ID']
-    st.write(f"ID seleccionado: {id_seleccionado}")
-
-    # Filtrar el DataFrame original
-    df_embrion = datos[datos['ID'] == id_seleccionado]
-    df_embrion = df_embrion.drop(columns=['embarazo','ploidía'])
-else:
-    st.write("No se ha seleccionado ninguna fila.")
-
-'''
+df_embrion = datos[datos['ID'] == ID_embrion]
+df_embrion = df_embrion.drop(columns=['embarazo','ploidía'])
 
 # GENERO LAS PREDICCIONES 
 def tratamiento_señal(espectro_completo,model):
