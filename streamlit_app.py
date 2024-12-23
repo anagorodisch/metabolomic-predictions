@@ -37,7 +37,7 @@ event = st.dataframe(
 
 embrion = event.selection.rows
 filtered_df = embriones.iloc[embrion]
-ID_embrion = filtered_df['ID'].value
+ID_embrion = filtered_df['ID'].values
 st.write(f"ID seleccionado: {ID_embrion}")
 
 '''
