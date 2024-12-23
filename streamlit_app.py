@@ -35,15 +35,19 @@ event = st.dataframe(
     selection_mode="single-row",
 )
 
-embrion = event.selection.rows
-filtered_df = embriones.iloc[embrion]
-ID_embrion = filtered_df['ID'].values
-ID_embrion = ID_embrion[0]
-ID_embrion = str(ID_embrion)
-st.write(f"ID seleccionado: {ID_embrion}")
+if event.selection:
+    embrion = event.selection.rows
+    filtered_df = embriones.iloc[embrion]
+    ID_embrion = filtered_df['ID'].values
+    ID_embrion = ID_embrion[0]
+    ID_embrion = str(ID_embrion)
+    st.write(f"ID seleccionado: {ID_embrion}")
 
-df_embrion = datos[datos['ID'] == ID_embrion]
-df_embrion = df_embrion.drop(columns=['embarazo','ploidía'])
+    df_embrion = datos[datos['ID'] == ID_embrion]
+    df_embrion = df_embrion.drop(columns=['embarazo','ploidía'])
+
+else:
+    st.warning("Por favor, seleccione un embrión de la tabla.")
 
 # GENERO LAS PREDICCIONES 
 def tratamiento_señal(espectro_completo,model):
