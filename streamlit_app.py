@@ -25,6 +25,7 @@ datos = datos.drop(columns=['Unnamed: 0'])
 columnas_deseadas = ["ID", 'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDENCIA SEMEN", "ESTADO SEMEN", "DIA EMBRION", "GRADO EXPANSIÓN", "MCI", "TROFODERMO", "DESTINO"]
 embriones = datos[columnas_deseadas]
 embriones = embriones.drop_duplicates(subset='ID')
+embriones = embriones.reset_index()
 
 event = st.dataframe(
     embriones,
@@ -38,6 +39,7 @@ embrion = event.selection.rows
 filtered_df = embriones.iloc[embrion]
 filtered_df
 ID_embrion = filtered_df['ID']
+ID_embrion
 st.write(f"ID seleccionado: {ID_embrion}")
 
 '''
