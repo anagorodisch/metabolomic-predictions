@@ -39,9 +39,11 @@ embrion = event.selection.rows
 filtered_df = embriones.iloc[embrion]
 ID_embrion = filtered_df['ID'].values
 st.write(f"ID seleccionado: {ID_embrion}")
+ID_embrion
+hola = type(ID_embrion)
+hola
 
 df_embrion = datos[datos['ID'] == ID_embrion]
-df_embrion
 df_embrion = df_embrion.drop(columns=['embarazo','ploidía'])
 
 # GENERO LAS PREDICCIONES 
