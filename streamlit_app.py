@@ -33,7 +33,11 @@ event = st.dataframe(
     on_select="rerun",
     selection_mode="multi-row",
 )
+embrion = event.selection.rows
+ID_embrion = embrion['ID']
+st.write(f"ID seleccionado: {ID_embrion}")
 
+'''
 gb = GridOptionsBuilder.from_dataframe(embriones)
 gb.configure_selection(selection_mode="single", use_checkbox=True)  # Selección única con checkbox
 grid_options = gb.build()
@@ -46,6 +50,8 @@ response = AgGrid(
     data_return_mode=DataReturnMode.FILTERED_AND_SORTED,
     theme="streamlit",  # Cambiar a "dark", "blue", "alpine" según tu preferencia
 )
+
+'''
 
 if not response['selected_rows'].empty:  # Verificar si no está vacío
     fila_seleccionada = response['selected_rows'].iloc[0]  # Obtener la primera fila seleccionada
