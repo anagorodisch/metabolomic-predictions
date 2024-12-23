@@ -35,7 +35,8 @@ event = st.dataframe(
     selection_mode="single-row",
 )
 
-if event.selection:
+# Verificar si se ha seleccionado una fila
+if event and event.selection.rows:
     embrion = event.selection.rows
     filtered_df = embriones.iloc[embrion]
     ID_embrion = filtered_df['ID'].values
@@ -43,11 +44,11 @@ if event.selection:
     ID_embrion = str(ID_embrion)
     st.write(f"ID seleccionado: {ID_embrion}")
 
+    # Filtrar datos del embrión seleccionado
     df_embrion = datos[datos['ID'] == ID_embrion]
-    df_embrion = df_embrion.drop(columns=['embarazo','ploidía'])
-
+    df_embrion = df_embrion.drop(columns=['embarazo', 'ploidía'])
 else:
-    st.warning("Por favor, seleccione un embrión de la tabla.")
+    st.write("Por favor, seleccione un embrión de la tabla.")
 
 # GENERO LAS PREDICCIONES 
 def tratamiento_señal(espectro_completo,model):
