@@ -131,7 +131,7 @@ def generar_predicciones(clinica_y_espectros):
   df_completo_lgb = tratamiento_señal(clinica_y_espectros,"lgb")
   df_completo_dnn = tratamiento_señal(clinica_y_espectros,"dnn")
 
-#####Bloque de prediccion lgb ploidia
+  ###Bloque de prediccion lgb ploidia
   df_ploidia = df_completo_lgb.copy()
   columns_to_transform = ['PROCEDENCIA SEMEN', 'ESTADO SEMEN', 'DIA EMBRION', 'GRADO EXPANSIÓN', 'MCI', 'TROFODERMO', 'DESTINO','PROCEDENCIA OVOCITOS']
 
