@@ -39,23 +39,22 @@ response = AgGrid(
     theme="streamlit",  # Cambiar a "dark", "blue", "alpine" según tu preferencia
 )
 
-# Verificar si hay una fila seleccionada
-if response['selected_rows']:
-    fila_seleccionada = response['selected_rows'][0]  # Obtener la primera fila seleccionada
+if not response['selected_rows'].empty:  # Verificar si no está vacío
+    fila_seleccionada = response['selected_rows'].iloc[0]  # Obtener la primera fila seleccionada
     st.write("Detalles de la fila seleccionada:")
-    st.write(fila_seleccionada)
+    st.write(fila_seleccionada.to_dict())
     
     # Guardar el valor del ID seleccionado
     id_seleccionado = fila_seleccionada['ID']
     st.write(f"ID seleccionado: {id_seleccionado}")
-    
+
     # Filtrar el DataFrame original
     df_embrioin = datos[datos['ID'] == id_seleccionado]
     st.write("Nuevo DataFrame con las filas correspondientes al ID seleccionado:")
     st.write(df_embrioin)
 else:
     st.write("No se ha seleccionado ninguna fila.")
-    
+
 # Selección de archivos
 st.subheader("Seleccionar la señal:")
 uploaded_files = st.file_uploader(
