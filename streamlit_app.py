@@ -36,6 +36,7 @@ event = st.dataframe(
 
 embrion = event.selection.rows
 filtered_df = embriones.iloc[embrion]
+filtered_df
 ID_embrion = filtered_df['ID']
 st.write(f"ID seleccionado: {ID_embrion}")
 
@@ -53,7 +54,7 @@ response = AgGrid(
     theme="streamlit",  # Cambiar a "dark", "blue", "alpine" según tu preferencia
 )
 
-'''
+
 
 if not response['selected_rows'].empty:  # Verificar si no está vacío
     fila_seleccionada = response['selected_rows'].iloc[0]  # Obtener la primera fila seleccionada
@@ -67,6 +68,8 @@ if not response['selected_rows'].empty:  # Verificar si no está vacío
     df_embrion = df_embrion.drop(columns=['embarazo','ploidía'])
 else:
     st.write("No se ha seleccionado ninguna fila.")
+
+'''
 
 # GENERO LAS PREDICCIONES 
 def tratamiento_señal(espectro_completo,model):
