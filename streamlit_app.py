@@ -49,11 +49,8 @@ if not response['selected_rows'].empty:  # Verificar si no está vacío
     # Filtrar el DataFrame original
     df_embrion = datos[datos['ID'] == id_seleccionado]
     df_embrion = df_embrion.drop(columns=['embarazo','ploidía'])
-    st.write("Nuevo DataFrame con las filas correspondientes al ID seleccionado:")
-    st.write(df_embrion)
 else:
     st.write("No se ha seleccionado ninguna fila.")
-
 
 # GENERO LAS PREDICCIONES 
 def tratamiento_señal(espectro_completo,model):
