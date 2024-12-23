@@ -31,10 +31,12 @@ event = st.dataframe(
     use_container_width=True,
     hide_index=True,
     on_select="rerun",
-    selection_mode="multi-row",
+    selection_mode="single-row",
 )
+
 embrion = event.selection.rows
-ID_embrion = embrion['ID']
+filtered_df = embriones.iloc[embrion]
+ID_embrion = filtered_df['ID']
 st.write(f"ID seleccionado: {ID_embrion}")
 
 '''
