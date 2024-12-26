@@ -13,6 +13,8 @@ import plotly.graph_objs as go
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, GridUpdateMode
 from functions import tratamiento_señal, generar_predicciones, plot_signals
 
+st.set_page_config(layout="wide")
+
 # Título de la aplicación
 st.image("embryoxite.png", width=250)
 st.title("PREGNANCY AND PLOIDY PREDICTION")
