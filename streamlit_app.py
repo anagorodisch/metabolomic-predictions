@@ -14,9 +14,9 @@ from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, GridUpdateMode
 
 # Título de la aplicación
 st.image("embryoxite.png", width=250)
-st.title("PREDICCIÓN DE EMBARAZO Y PLOIDÍA")
+st.title("PREGNANCY AND PLOIDY PREDICTION")
 
-st.subheader("Seleccione un embrión:")
+st.subheader("Select an Embryo:")
 # Importo los datos
 datos = pd.read_csv('df_para_app_final.csv')
 print(datos.columns)
@@ -26,6 +26,18 @@ columnas_deseadas = ["ID", 'EDAD PTE OVOCITOS', "PROCEDENCIA OVOCITOS", "PROCEDE
 embriones = datos[columnas_deseadas]
 embriones = embriones.drop_duplicates(subset='ID')
 embriones = embriones.reset_index(drop=True)
+embriones = embriones.rename(columns={
+    'EDAD PTE OVOCITOS': 'Oocyte Age',
+    'PROCEDENCIA OVOCITOS': 'Oocyte Source',
+    'PROCEDENCIA SEMEN': 'Sperm Source',
+    'ESTADO SEMEN': 'Sperm State',
+    'DIA EMBRION': 'Embryo Transfer Day',
+    'GRADO EXPANSIÓN': 'Expansion Grade',
+    'MCI': 'ICM',
+    'TROFODERMO': 'Trophectoderm',
+    'DESTINO': 'Preservation Process'
+})
+
 
 event = st.dataframe(
     embriones,
@@ -42,13 +54,13 @@ if event and event.selection.rows:
     ID_embrion = filtered_df['ID'].values
     ID_embrion = ID_embrion[0]
     ID_embrion = str(ID_embrion)
-    st.write(f"ID seleccionado: {ID_embrion}")
+    st.write(f"Selected ID: {ID_embrion}")
 
     # Filtrar datos del embrión seleccionado
     df_embrion = datos[datos['ID'] == ID_embrion]
     df_embrion = df_embrion.drop(columns=['embarazo', 'ploidía'])
 else:
-    st.write("Por favor, seleccione un embrión de la tabla.")
+    st.write("Please select and embryo from the table.")
 
 # GENERO LAS PREDICCIONES 
 def tratamiento_señal(espectro_completo,model):
@@ -161,9 +173,9 @@ def generar_predicciones(clinica_y_espectros):
   pred_ploidia_lgb = Counter(df_pred_ploidia_lgb['Prediccion']).most_common(1)[0][0]
 
   if pred_ploidia_lgb == 1:
-      pred_ploidia_lgb = 'EUPLOIDE'
+      pred_ploidia_lgb = 'EUPLOID'
   else:
-      pred_ploidia_lgb = 'ANEUPLOIDE'
+      pred_ploidia_lgb = 'ANEUPLOID'
 
 ######Prediccion lgb embarazo
 # Cargar los LabelEncoders guardados
@@ -203,9 +215,9 @@ def generar_predicciones(clinica_y_espectros):
   pred_embarazo_lgb = Counter(df_pred_embarazo_lgb['Prediccion']).most_common(1)[0][0]
 
   if pred_embarazo_lgb == 1:
-      pred_embarazo_lgb = 'EMBARAZO'
+      pred_embarazo_lgb = 'POSITIVE'
   else:
-      pred_embarazo_lgb = 'NO EMBARAZO'
+      pred_embarazo_lgb = 'NEGATIVE'
 
 #######prediccion ploidia dnn
 
@@ -254,9 +266,9 @@ def generar_predicciones(clinica_y_espectros):
   pred_ploidia_dnn = Counter(df_pred_ploidia_dnn['Prediccion']).most_common(1)[0][0]
 
   if pred_ploidia_dnn == 1:
-      pred_ploidia_dnn = 'EUPLOIDE'
+      pred_ploidia_dnn = 'EUPLOID'
   else:
-      pred_ploidia_dnn = 'ANEUPLOIDE'
+      pred_ploidia_dnn = 'ANEUPLOID'
 
 ###prediccion embarazo dnn
   # PRIMERO PROCESO LAS VARIABLES NUMÉRICAS
@@ -293,9 +305,9 @@ def generar_predicciones(clinica_y_espectros):
   pred_embarazo_dnn = Counter(df_pred_embarazo_dnn['Prediccion']).most_common(1)[0][0]
 
   if pred_embarazo_dnn == 1:
-      pred_embarazo_dnn = 'EMBARAZO'
+      pred_embarazo_dnn = 'POSITIVE'
   else:
-      pred_embarazo_dnn = 'NO EMBARAZO'
+      pred_embarazo_dnn = 'NEGATIVE'
 
   return pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb
 
@@ -329,11 +341,11 @@ def plot_signals(dataframe, predictions, task):
         traces.append(trace)
 
     if task == 'embarazo':
-        positive = 'EMBARAZO'
-        negative = 'NO EMBARAZO'
+        positive = 'POSITIVE'
+        negative = 'NEGATIVE'
     elif task == 'ploidia':
-        positive = 'EUPLOIDE'
-        negative = 'ANEUPLOIDE'
+        positive = 'EUPLOID'
+        negative = 'ANEUPLOID'
 
     # Agregar "color code" como una traza invisible para la leyenda
     color_code_traces = [
@@ -366,19 +378,19 @@ def plot_signals(dataframe, predictions, task):
     return fig
 
 # Botón para predecir
-if st.button("Predecir"):
+if st.button("Predict"):
     pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb = generar_predicciones(df_embrion)
     data = {
-    "Modelo_ML": [pred_embarazo_lgb, pred_ploidia_lgb],
-    "Modelo_DL": [pred_embarazo_dnn, pred_ploidia_dnn]
+    "Model_ML": [pred_embarazo_lgb, pred_ploidia_lgb],
+    "Model_DL": [pred_embarazo_dnn, pred_ploidia_dnn]
     }
 
-    df = pd.DataFrame(data, index=["Embarazo", "Ploidía"])
-    st.subheader("Predicciones")
+    df = pd.DataFrame(data, index=["Pregnancy", "Ploidy"])
+    st.subheader("Predictions")
     st.table(df)
 
-    st.subheader("Predicciones por Espectro")
-    tab1, tab2, tab3, tab4 = st.tabs(["EMBARAZO_ML", "EMBARAZO_DL", "PLOIDÍA_ML", "PLOIDÍA_DL"])
+    st.subheader("Predictions by Spectrum")
+    tab1, tab2, tab3, tab4 = st.tabs(["PREGNANCY_ML", "PREGNANCY_DL", "PLOIDY_ML", "PLOIDY_DL"])
     fig_1 = plot_signals(df_embrion, df_pred_embarazo_lgb, 'embarazo')
     fig_2 = plot_signals(df_embrion, df_pred_embarazo_dnn, 'embarazo')
     fig_3 = plot_signals(df_embrion, df_pred_ploidia_lgb, 'ploidia')
