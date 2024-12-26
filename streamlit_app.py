@@ -40,6 +40,15 @@ embriones = embriones.rename(columns={
     'TROFODERMO': 'Trophectoderm',
     'DESTINO': 'Preservation Process'
 })
+reemplazos = {
+    "CONGELADO": "CRYOPRESERVED",
+    "ÓVULO DONADO": "DONOR",
+    "ÓVULO PROPIO": "SELF",
+    "SEMEN DONADO": "DONOR",
+    "SEMEN PROPIO": "SELF",
+    "FRESCO": "FRESH"
+}
+embriones = embriones.replace(reemplazos)
 
 event = st.dataframe(
     embriones,
