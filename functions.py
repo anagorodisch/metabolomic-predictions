@@ -221,9 +221,9 @@ def generar_predicciones(clinica_y_espectros):
   dense_model = load_model(model_dnn_ploidy)
 
   y_pred = dense_model.predict(X_test_compuesto)
-  y_pred = np.argmax(y_pred, axis=1)
-
   y_prob = np.max(y_pred, axis=1)
+
+  y_pred = np.argmax(y_pred, axis=1)
   y_prob = np.mean(y_pred_prob)
 
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
@@ -266,9 +266,9 @@ def generar_predicciones(clinica_y_espectros):
   dense_model = load_model(model_dnn_pregnancy)
 
   y_pred = dense_model.predict(X_test_compuesto)
-  y_pred = np.argmax(y_pred, axis=1)
-
   y_prob = np.max(y_pred, axis=1)
+  
+  y_pred = np.argmax(y_pred, axis=1)
   y_prob = np.mean(y_pred_prob)
 
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
