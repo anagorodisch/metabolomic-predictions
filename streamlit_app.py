@@ -111,3 +111,8 @@ if event and event.selection.rows:
 else:
     st.write("Please select and embryo from the table.")
 
+st.markdown("""
+    <p style="font-size: 10px; text-align: center; position: fixed; bottom: 0; width: 100%; background-color: white; padding: 5px;">
+        The models are still in development and may evolve over time.
+    </p>
+""", unsafe_allow_html=True)
