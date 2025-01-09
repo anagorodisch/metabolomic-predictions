@@ -112,7 +112,7 @@ else:
     st.write("Please select and embryo from the table.")
 
 st.markdown("""
-    <p style="font-size: 20px; text-align: center; position: fixed; bottom: 0; width: 100%; background-color: white; padding: 5px;">
+    <p style="font-size: 12px; text-align: center; position: fixed; bottom: 0; width: 100%; background-color: white; padding: 5px;">
         The models are still in development and may evolve over time
     </p>
 """, unsafe_allow_html=True)
