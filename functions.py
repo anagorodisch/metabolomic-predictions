@@ -115,6 +115,10 @@ def generar_predicciones(clinica_y_espectros):
   model = lgb.Booster(model_file=modelo_lgb_ploidy)
   y_pred_prob = model.predict(X_test, num_iteration=model.best_iteration)
   y_pred = [1 if prob > 0.5 else 0 for prob in y_pred_prob]
+  y_prob = np.mean(y_pred_prob)
+
+  if (y_prob < 0.5):
+      y_prob = 1- y_prob
 
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
   df_pred_ploidia_lgb = df_completo_lgb[['REP_ID']].copy()
@@ -126,6 +130,8 @@ def generar_predicciones(clinica_y_espectros):
       pred_ploidia_lgb = 'EUPLOID'
   else:
       pred_ploidia_lgb = 'ANEUPLOID'
+
+  pred_ploidia_lgb = [pred_ploidia_lgb, y_prob]
 
 ######Prediccion lgb embarazo
 # Cargar los LabelEncoders guardados
@@ -158,6 +164,11 @@ def generar_predicciones(clinica_y_espectros):
 
   y_pred_prob = model.predict(X_test, num_iteration=model.best_iteration)
   y_pred = [1 if prob > 0.5 else 0 for prob in y_pred_prob]
+  y_prob = np.mean(y_pred_prob)
+
+  if (y_prob < 0.5):
+      y_prob = 1- y_prob
+
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
   df_pred_embarazo_lgb = df_completo_lgb[['REP_ID']].copy()
   df_pred_embarazo_lgb['Prediccion'] = y_pred
@@ -168,6 +179,8 @@ def generar_predicciones(clinica_y_espectros):
       pred_embarazo_lgb = 'POSITIVE'
   else:
       pred_embarazo_lgb = 'NEGATIVE'
+
+  pred_embarazo_lgb = [pred_embarazo_lgb, y_prob]
 
 #######prediccion ploidia dnn
 
@@ -209,6 +222,10 @@ def generar_predicciones(clinica_y_espectros):
 
   y_pred = dense_model.predict(X_test_compuesto)
   y_pred = np.argmax(y_pred, axis=1)
+
+  y_prob = np.max(y_pred, axis=1)
+  y_prob = np.mean(y_pred_prob)
+
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
   df_pred_ploidia_dnn = df_completo_dnn[['REP_ID']].copy()
   df_pred_ploidia_dnn['Prediccion'] = y_pred
@@ -219,6 +236,8 @@ def generar_predicciones(clinica_y_espectros):
       pred_ploidia_dnn = 'EUPLOID'
   else:
       pred_ploidia_dnn = 'ANEUPLOID'
+
+  pred_ploidia_dnn = [pred_ploidia_dnn, y_prob]
 
 ###prediccion embarazo dnn
   # PRIMERO PROCESO LAS VARIABLES NUMÉRICAS
@@ -248,6 +267,10 @@ def generar_predicciones(clinica_y_espectros):
 
   y_pred = dense_model.predict(X_test_compuesto)
   y_pred = np.argmax(y_pred, axis=1)
+
+  y_prob = np.max(y_pred, axis=1)
+  y_prob = np.mean(y_pred_prob)
+
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
   df_pred_embarazo_dnn = df_completo_dnn[['REP_ID']].copy()
   df_pred_embarazo_dnn['Prediccion'] = y_pred
@@ -258,6 +281,8 @@ def generar_predicciones(clinica_y_espectros):
       pred_embarazo_dnn = 'POSITIVE'
   else:
       pred_embarazo_dnn = 'NEGATIVE'
+
+  pred_embarazo_dnn = [pred_embarazo_dnn, y_prob]
 
   return pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb
 
