@@ -11,7 +11,7 @@ from tensorflow.keras.models import load_model
 from scipy.signal import savgol_filter
 import plotly.graph_objs as go
 from st_aggrid import AgGrid, GridOptionsBuilder, DataReturnMode, GridUpdateMode
-from functions import tratamiento_señal, generar_predicciones, plot_signals
+from functions import tratamiento_señal, generar_predicciones, plot_signals, format_prediction
 
 st.set_page_config(layout="wide")
 
@@ -75,10 +75,10 @@ if event and event.selection.rows:
     if st.button("Predict"):
         pred_embarazo_dnn, pred_embarazo_lgb, pred_ploidia_dnn, pred_ploidia_lgb, df_pred_embarazo_dnn, df_pred_embarazo_lgb, df_pred_ploidia_dnn, df_pred_ploidia_lgb = generar_predicciones(df_embrion)
         
-        pred_embarazo_lgb = f"{pred_embarazo_lgb[1]} {pred_embarazo_lgb[0]}"
-        pred_ploidia_lgb = f"{pred_ploidia_lgb[1]} {pred_ploidia_lgb[0]}"
-        pred_embarazo_dnn = f"{pred_embarazo_dnn[1]} {pred_embarazo_dnn[0]}"
-        pred_ploidia_dnn = f"{pred_ploidia_dnn[1]} {pred_ploidia_dnn[0]}"
+        pred_embarazo_lgb = format_prediction(pred_embarazo_lgb)
+        pred_ploidia_lgb = format_prediction(pred_ploidia_lgb)
+        pred_embarazo_dnn = format_prediction(pred_embarazo_dnn)
+        pred_ploidia_dnn = format_prediction(pred_ploidia_dnn)
 
         data = {
         "Model_ML": [pred_embarazo_lgb, pred_ploidia_lgb],

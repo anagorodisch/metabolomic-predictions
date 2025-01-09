@@ -351,3 +351,8 @@ def plot_signals(dataframe, predictions, task):
     )
 
     return fig
+
+def format_prediction(pred_task_model):
+    pred = pred_task_model[0]  # Clase predicha
+    prob = pred_task_model[1] * 100  # Convertir a porcentaje
+    return f"{pred} ({prob:.2f}%)"
