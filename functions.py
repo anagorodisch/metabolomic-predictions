@@ -118,7 +118,7 @@ def generar_predicciones(clinica_y_espectros):
   y_prob = np.mean(y_pred_prob)
 
   if (y_prob < 0.5):
-      y_prob = 1- y_prob
+      y_prob = 1 - y_prob
 
   #crear dataframe con todos los espectros y otro con una votacion mayoritaria
   df_pred_ploidia_lgb = df_completo_lgb[['REP_ID']].copy()
