@@ -21,7 +21,7 @@ st.title("PREGNANCY AND PLOIDY PREDICTION")
 
 
 st.markdown("""
-    <div style="border: 2px solid #000000; padding: 10px; border-radius: 5px; background-color: #f9f9f9;">
+    <div style="padding: 10px; border-radius: 5px; background-color: #f9f9f9;">
         <strong>Disclaimer and Professional Use Only</strong><br>
         This tool is intended for use by trained professionals in clinical settings. It does not constitute a definitive medical diagnosis or decision-making tool and should always be used in conjunction with professional judgment and established clinical protocols.
     </div>
